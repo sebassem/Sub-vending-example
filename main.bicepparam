@@ -8,6 +8,8 @@ param subscriptionTags = {
   workload: 'phoenix'
   department: 'hr'
 }
+param subscriptionManagementGroupAssociationEnabled = true
+param subscriptionManagementGroupId = 'hr-phoenix'
 param virtualNetworkEnabled = true
 param virtualNetworkName = 'vnet-hr-phoenix'
 param virtualNetworkResourceGroupName = 'rg-hr-phoenix'

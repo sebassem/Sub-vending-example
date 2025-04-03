@@ -49,6 +49,12 @@ param resourceProviders object = {}
 @description('Optional. Supply an array of objects containing the details of the role assignments to create.\n\nEach object must contain the following `keys`:\n- `principalId` = The Object ID of the User, Group, SPN, Managed Identity to assign the RBAC role too.\n- `definition` = The Name of one of the pre-defined built-In RBAC Roles or a Resource ID of a Built-in or custom RBAC Role Definition as follows:\n  - You can only provide the RBAC role name of the pre-defined roles (Contributor, Owner, Reader, Role Based Access Control Administrator (Preview), and User Access Administrator). We only provide those roles as they are the most common ones to assign to a new subscription, also to reduce the template size and complexity in case we define each and every Built-in RBAC role.\n  - You can provide the Resource ID of a Built-in or custom RBAC Role Definition\n    - e.g. `/providers/Microsoft.Authorization/roleDefinitions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`\n- `relativeScope` = 2 options can be provided for input value:\n    1. `\'\'` *(empty string)* = Make RBAC Role Assignment to Subscription scope\n    2. `\'/resourceGroups/<RESOURCE GROUP NAME>\'` = Make RBAC Role Assignment to specified Resource Group.\n')
 param roleAssignments array = []
 
+@description('Optional. Whether to move the Subscription to the specified Management Group supplied in the parameter `subscriptionManagementGroupId`.\n')
+param subscriptionManagementGroupAssociationEnabled bool = true
+
+@description('Optional. The destination Management Group ID for the new Subscription that will be created by this module (or the existing one provided in the parameter `existingSubscriptionId`).\n\n**IMPORTANT:** Do not supply the display name of the Management Group. The Management Group ID forms part of the Azure Resource ID. e.g., `/providers/Microsoft.Management/managementGroups/{managementGroupId}`.\n')
+param subscriptionManagementGroupId string
+
 module subVending 'br/public:avm/ptn/lz/sub-vending:0.3.0' = {
   params: {
     subscriptionAliasEnabled: true
@@ -57,6 +63,8 @@ module subVending 'br/public:avm/ptn/lz/sub-vending:0.3.0' = {
     subscriptionDisplayName: subscriptionDisplayName
     subscriptionWorkload: subscriptionWorkload
     subscriptionTags: subscriptionTags
+    subscriptionManagementGroupAssociationEnabled: subscriptionManagementGroupAssociationEnabled
+    subscriptionManagementGroupId: subscriptionManagementGroupId
     virtualNetworkEnabled: virtualNetworkEnabled
     virtualNetworkName: virtualNetworkName
     virtualNetworkResourceGroupName: virtualNetworkResourceGroupName
